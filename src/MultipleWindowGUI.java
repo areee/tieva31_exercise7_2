@@ -1,9 +1,15 @@
+
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JInternalFrame;
+import javax.swing.JTextArea;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author ylhaart
@@ -15,6 +21,7 @@ public class MultipleWindowGUI extends javax.swing.JFrame {
      */
     public MultipleWindowGUI() {
         initComponents();
+        index = (mdi.getAllFrames().length);
     }
 
     /**
@@ -26,21 +33,107 @@ public class MultipleWindowGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        mdi = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        menuItemNew = new javax.swing.JMenuItem();
+        menuItemClose = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        menuItemExit = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Exercise 7.2");
+
+        fileMenu.setText("File");
+
+        menuItemNew.setText("New");
+        menuItemNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemNewActionPerformed(evt);
+            }
+        });
+        fileMenu.add(menuItemNew);
+
+        menuItemClose.setText("Close");
+        menuItemClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemCloseActionPerformed(evt);
+            }
+        });
+        fileMenu.add(menuItemClose);
+        fileMenu.add(jSeparator1);
+
+        menuItemExit.setText("Exit");
+        menuItemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemExitActionPerformed(evt);
+            }
+        });
+        fileMenu.add(menuItemExit);
+
+        jMenuBar1.add(fileMenu);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mdi, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mdi, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuItemNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemNewActionPerformed
+        index++;
+        JInternalFrame f = new JInternalFrame("Edit text" + index, true, true, true, true);
+
+        f.setLocation(index * 10, index * 10);
+        JTextArea jta = new JTextArea(10, 10);
+        jta.setDragEnabled(true);
+        f.getContentPane().add(jta);
+        f.pack();
+        f.setVisible(true);
+        mdi.add(f);
+
+        try {
+            f.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MultipleWindowGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_menuItemNewActionPerformed
+
+    private void menuItemCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCloseActionPerformed
+        JInternalFrame frame = mdi.getSelectedFrame();
+        frame.dispose();
+
+        JInternalFrame[] allFrames = mdi.getAllFrames();
+        try {
+            if (index > 1) {
+                allFrames[0].setSelected(true);
+                index--;
+            }
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MultipleWindowGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        mdi.setSelectedFrame(allFrames[0]);
+    }//GEN-LAST:event_menuItemCloseActionPerformed
+
+    private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemExitActionPerformed
+        dispose();
+    }//GEN-LAST:event_menuItemExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +171,13 @@ public class MultipleWindowGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JDesktopPane mdi;
+    private javax.swing.JMenuItem menuItemClose;
+    private javax.swing.JMenuItem menuItemExit;
+    private javax.swing.JMenuItem menuItemNew;
     // End of variables declaration//GEN-END:variables
+    int index;
 }
